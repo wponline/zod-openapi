@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "composite": true,
+    "types": ["jest", "node"]
+  },
+  "include": ["jest.config.ts", "**/*.spec.ts", "**/*.d.ts"]
+}

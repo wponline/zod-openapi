@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "Bundler",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "moduleDetection": "force",
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "importHelpers": true,
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["es2022", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true
+  },
+  "files": [],
+  "include": [],
+  "exclude": ["src/**/*.spec.ts"],
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}
