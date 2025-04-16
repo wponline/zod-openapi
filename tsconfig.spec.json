@@ -4,7 +4,7 @@
     "declaration": true,
     "declarationMap": true,
     "composite": true,
-    "types": ["jest", "node"]
+    "types": ["node"]
   },
-  "include": ["jest.config.ts", "**/*.spec.ts", "**/*.d.ts"]
+  "include": ["vitest.config.ts", "**/*.spec.ts", "**/*.d.ts"]
 }

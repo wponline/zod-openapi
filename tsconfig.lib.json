@@ -6,5 +6,5 @@
     "composite": true,
     "types": ["node"]
   },
-  "exclude": ["jest.config.ts", "**/*.spec.ts"]
+  "exclude": ["vitest.config.ts", "**/*.spec.ts"]
 }
