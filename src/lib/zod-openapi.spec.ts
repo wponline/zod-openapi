@@ -1,5 +1,6 @@
 import { SchemaObject } from "openapi3-ts/oas31";
 import validator from "validator";
+import { describe, expect, it, test } from "vitest";
 import { z } from "zod";
 import { extendApi, generateSchema } from "./zod-openapi";
 
@@ -33,6 +34,54 @@ describe("zodOpenapi", () => {
         aDate: { type: ["string"], format: "date-time" },
       },
       required: ["aBigInt", "aBoolean", "aDate", "aNumber"],
+      description: 'Primitives also testing overwriting of "required"',
+    });
+  });
+
+  it("should support basic primitives for OpenAPI v3.0", () => {
+    const zodSchema = extendApi(
+      z.object({
+        aString: z.string().describe("A test string").optional(),
+        aNumber: z.number().optional(),
+        aBigInt: z.bigint(),
+        aBoolean: z.boolean(),
+        aDate: z.date(),
+        aNullableString: z.string().nullable(),
+        aUnionIncludingNull: z.union([z.string(), z.null(), z.number()]),
+        aNumberMin: z.number().min(3).optional(),
+        aNumberGt: z.number().gt(5).optional(),
+      }),
+      {
+        description: `Primitives also testing overwriting of "required"`,
+        required: ["aNumber"], // All schema settings "merge"
+      }
+    );
+    const apiSchema = generateSchema(zodSchema, false, "3.0");
+
+    expect(apiSchema).toEqual({
+      type: "object",
+      properties: {
+        aString: { description: "A test string", type: "string" },
+        aNumber: { type: "number" },
+        aBigInt: { type: "integer", format: "int64" },
+        aBoolean: { type: "boolean" },
+        aDate: { type: "string", format: "date-time" },
+        aNullableString: { type: "string", nullable: true },
+        aUnionIncludingNull: {
+          oneOf: [{ type: "string" }, { type: "number" }],
+          nullable: true,
+        },
+        aNumberMin: { type: "number", minimum: 3 },
+        aNumberGt: { type: "number", minimum: 5, exclusiveMinimum: true },
+      },
+      required: [
+        "aBigInt",
+        "aBoolean",
+        "aDate",
+        "aNullableString",
+        "aUnionIncludingNull",
+        "aNumber",
+      ],
       description: 'Primitives also testing overwriting of "required"',
     });
   });
@@ -1055,8 +1104,9 @@ describe("zodOpenapi", () => {
   });
 
   test("should work with ZodReadonly", () => {
-    expect(generateSchema(z.object({ field: z.string() })))
-      .toMatchInlineSnapshot(`
+    expect(
+      generateSchema(z.object({ field: z.string() }))
+    ).toMatchInlineSnapshot(`
       {
         "properties": {
           "field": {
@@ -1074,8 +1124,9 @@ describe("zodOpenapi", () => {
       }
     `);
 
-    expect(generateSchema(z.object({ field: z.string() }).readonly()))
-      .toMatchInlineSnapshot(`
+    expect(
+      generateSchema(z.object({ field: z.string() }).readonly())
+    ).toMatchInlineSnapshot(`
       {
         "properties": {
           "field": {
